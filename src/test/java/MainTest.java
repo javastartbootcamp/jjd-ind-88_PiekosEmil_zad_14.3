@@ -10,6 +10,7 @@ import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.util.List;
 
+import static org.assertj.core.api.AssertionsForClassTypes.fail;
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
 @Timeout(5)
@@ -29,7 +30,7 @@ public class MainTest {
         Main.main(new String[]{});
 
         // then
-        assertThat(outContent.toString()).contains("Polska (PL) ma 38000000 ludności.");
+        assertThat(outContent.toString()).contains("PL (Polska) ma 38000000 ludności.");
     }
 
     @Test
@@ -42,13 +43,20 @@ public class MainTest {
         Main.main(new String[]{});
 
         // then
-        assertThat(outContent.toString()).contains("Polska (PL) ma 38000000 ludności.");
+        assertThat(outContent.toString()).contains("DE (Niemcy) ma 80000000 ludności.");
     }
 
     @Test
     void shouldDisplayMessageWhenNoFile() throws Exception {
         // given
-        new File("countries.csv").delete();
+
+        File file = new File("countries.csv");
+        if (file.exists()) {
+            boolean deleted = file.delete();
+            if (!deleted) {
+                fail("Failed to delete file");
+            }
+        }
 
         // when
         Main.main(new String[]{});
