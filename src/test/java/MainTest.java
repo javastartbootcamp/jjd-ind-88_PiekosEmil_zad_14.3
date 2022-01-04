@@ -27,10 +27,10 @@ public class MainTest {
     void shouldWorkForOnlyOneCountry() throws Exception {
         // given
         copyFileFromResources("example1.csv", "countries.csv");
-        provideInput("PL");
+        Scanner scanner = provideInput("PL");
 
         // when
-        Main.main(new String[]{});
+        main.run(scanner);
 
         // then
         assertThat(outContent.toString()).contains("Polska (PL) ma 38000000 ludności.");
