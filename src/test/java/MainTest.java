@@ -8,6 +8,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.PrintStream;
 import java.net.URL;
+import java.nio.file.FileSystemException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
@@ -102,7 +103,11 @@ public class MainTest {
 
     private void copyFileFromResources(String name, String output) throws Exception {
         URL resource = getClass().getResource(name);
-        Files.copy(Path.of(resource.toURI()), new File(output).toPath(), StandardCopyOption.REPLACE_EXISTING);
+        try {
+            Files.copy(Path.of(resource.toURI()), new File(output).toPath(), StandardCopyOption.REPLACE_EXISTING);
+        } catch (FileSystemException e) {
+            throw new RuntimeException("Upewnij się, że zwalniasz plik! Po wykonaniu akcji na pliku wywołaj close() na BufferedReader, Scanner, czy z czego tam korzystasz.", e);
+        }
     }
 
 }
