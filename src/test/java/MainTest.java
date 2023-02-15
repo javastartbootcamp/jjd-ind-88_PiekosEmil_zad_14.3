@@ -62,7 +62,7 @@ public class MainTest {
             }
         }
 
-        Scanner scanner = provideInput();
+        Scanner scanner = provideInput("countries.csv");
 
         // when
         main.run(scanner);
